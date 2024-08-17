@@ -14,14 +14,17 @@
   "devDependencies": {
     "@deno/kv": "^0.8.1",
     "@olli/kvdex": "npm:@jsr/olli__kvdex",
+    "@oxi/result": "npm:@jsr/oxi__result",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@ts-rex/argon2": "npm:@jsr/ts-rex__argon2",
+    "arctic": "^1.9.2",
     "autoprefixer": "^10.4.20",
     "daisyui": "^4.12.10",
     "hono": "^4.5.5",
-    "lucia": "^3.2.0",
+    "nanoid": "^5.0.7",
+    "oslo": "^1.2.1",
     "postcss": "^8.4.41",
     "prettier": "^3.3.2",
     "prettier-plugin-svelte": "^3.2.5",
@@ -36,5 +39,8 @@
   "type": "module",
   "trustedDependencies": [
     "svelte-preprocess"
-  ]
+  ],
+  "dependencies": {
+    "@petamoriken/float16": "^3.8.7"
+  }
 }

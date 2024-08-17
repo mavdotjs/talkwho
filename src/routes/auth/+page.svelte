@@ -3,6 +3,16 @@
     import { page } from "$app/stores"
 	const { data } = $props();
 	const { enhance, message, constraints, errors, form } = superForm(data.form);
+    let password = $state('')
+    let username = $state('')
+    $effect(() => {
+        form.update(f => {
+            f.username = username
+            f.password = password
+            console.log(f)
+            return f
+        })
+    })
 </script>
 
 <div class="h-[100vh] flex items-center justify-center">
@@ -56,7 +66,7 @@
 		</div>
 		<span class="divider">or</span>
 		<form class="flex-col flex gap-y-4" method="post" use:enhance>
-			<label class="input input-bordered flex items-center gap-2">
+			<label class="input input-bordered flex items-center gap-2" class:input-error={!!$errors.username}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 16 16"
@@ -69,16 +79,17 @@
 				</svg>
 
 				<input
-					bind:value={$form.username}
+					bind:value={username}
 					aria-invalid={$errors.username ? 'true' : undefined}
+                    name="username"
 					type="text"
 					class="grow placeholder:text-base-content/20"
 					placeholder="kaii" />
 			</label>
 			<span
 				class="opacity-0 hidden transition-opacity duration-1000 text-error"
-				class:showerror={$errors.username}>^ {$errors.username?.join(' & ')}</span>
-			<label class="input input-bordered flex items-center gap-2">
+				class:showerror={$errors.username}>{$errors.username?.join(' & ')}</span>
+			<label class="input input-bordered flex items-center gap-2" class:input-error={!!$errors.password}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 16 16"
@@ -90,15 +101,16 @@
 						clip-rule="evenodd"></path>
 				</svg>
 				<input
-					bind:value={$form.password}
+					bind:value={password}
 					aria-invalid={$errors.password ? 'true' : undefined}
+                    name="password"
 					type="password"
 					class="grow placeholder:text-base-content/20"
 					placeholder="verygoodpassword" />
 			</label>
 			<span
 				class="opacity-0 hidden transition-opacity duration-1000 text-error"
-				class:showerror={$errors.password}>^ {$errors.password}</span>
+				class:showerror={$errors.password}>{$errors.password}</span>
 			<div class="flex flex-row gap-x-4">
 				<button formaction="?/signup" type="submit" class="btn btn-secondary flex-grow">
 					sign up
