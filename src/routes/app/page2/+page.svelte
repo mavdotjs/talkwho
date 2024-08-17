@@ -1,7 +1,3 @@
 <script>
     const { data } = $props()
 </script>
-
-<div class="">
-
-</div>

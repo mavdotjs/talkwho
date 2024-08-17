@@ -19,6 +19,12 @@ export const session = z.object({
     userId: z.string(),
 })
 
+export const chat = z.object({
+    name: z.string(),
+    creator: z.string().describe('id'),
+    createdAt: z.date()
+})
+
 export const kv = await openKv()
 export const db = kvdex(kv, {
     user: collection(user, {
@@ -35,9 +41,10 @@ export const db = kvdex(kv, {
             userId: 'secondary'
         }
     }),
-    pfp: collection(model<Uint8Array>()),
     chat: {
-        boxes: collection(model<{ userID: string, text: string }>()),
-        users: collection(publicUser)
+        boxes: collection(model<{ roomID: string, userID: string, text: string }>()),
+        users: collection(publicUser),
+        updatekey: collection(model<true>()),
+        data: collection(chat)
     }
 })

@@ -55,6 +55,6 @@ export const cookieController = new CookieController('auth_session', {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
-    path: ".",
+    path: "/",
 }, { expiresIn: cookieExpiration })
 export { createSessionForUser, deleteSession, getUserAndSession }
