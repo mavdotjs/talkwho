@@ -2,7 +2,6 @@ import { cookieController, deleteSession } from '$lib/auth';
 import { redirect } from '@sveltejs/kit';
 
 export async function GET({ locals, cookies }) {
-    console.log(locals)
     if(locals.session) {
         await deleteSession(locals.session.id)
         const sessionCookie = cookieController.createBlankCookie();

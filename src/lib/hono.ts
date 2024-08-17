@@ -1,6 +1,10 @@
 import { Hono } from "hono"
 
-const api = new Hono()
+type Bindings = {
+    locals: App.Locals
+}
+
+const api = new Hono<{ Bindings: Bindings }>()
 export type api = typeof api
 
-export const hono = new Hono().route('/api', api)
+export const hono = new Hono<{ Bindings: Bindings }>().route('/api', api)

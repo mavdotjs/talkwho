@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from 'sveltekit-adapter-deno';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 import { Float16Array } from "@petamoriken/float16"
