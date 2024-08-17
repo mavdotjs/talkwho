@@ -1,4 +1,4 @@
-import { kvdex as gate_keeping_the_database, collection, model } from "@olli/kvdex"
+import { kvdex as kvdex, collection, model } from "@olli/kvdex"
 import { openKv } from "@deno/kv"
 import { z } from "zod"
 
@@ -13,8 +13,8 @@ const session = z.object({
     userId: z.string(),
 })
 
-export const gate_keeping_this_too = await openKv()
-export const db = gate_keeping_the_database(gate_keeping_this_too, {
+export const kv = await openKv()
+export const db = kvdex(kv, {
     user: collection(user),
     session: collection(session, {
         indices: {
