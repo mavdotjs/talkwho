@@ -3,8 +3,8 @@ import { fail, message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
 import { hash, verify } from "@ts-rex/argon2"
-import { db } from '$lib/db.js';
-import { cookieController, cookieExpiration, createSessionForUser } from '$lib/auth.js';
+import { db } from '$lib/server/db.js';
+import { cookieController, cookieExpiration, createSessionForUser } from '$lib/server/auth.js';
 import { createDate } from 'oslo';
 import { redirect } from '@sveltejs/kit';
 

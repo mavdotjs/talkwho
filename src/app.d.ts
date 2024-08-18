@@ -2,7 +2,7 @@
 // for information about these interfaces
 
 import type { FlatDocumentData } from "@olli/kvdex"
-import { user, session } from "$lib/db"
+import { user, session } from "$lib/server/db"
 import z from "zod"
 declare global {
 	namespace App {

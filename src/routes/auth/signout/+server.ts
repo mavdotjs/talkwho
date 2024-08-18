@@ -1,4 +1,4 @@
-import { cookieController, deleteSession } from '$lib/auth';
+import { cookieController, deleteSession } from '$lib/server/auth';
 import { redirect } from '@sveltejs/kit';
 
 export async function GET({ locals, cookies }) {

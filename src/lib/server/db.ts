@@ -25,7 +25,7 @@ export const chat = z.object({
     createdAt: z.date()
 })
 
-export const kv = await openKv()
+export const kv = await openKv('http://0.0.0.0:4512')
 export const db = kvdex(kv, {
     user: collection(user, {
         idGenerator: ({ id }) => id,

@@ -36,8 +36,8 @@ async function getUserAndSession(
 	sessionId: string
 ): Promise<
 	Option<{
-		user: FlatDocumentData<z.infer<(typeof import('$lib/db'))['user']>, string>
-		session: FlatDocumentData<z.infer<(typeof import('$lib/db'))['session']>, string>
+		user: FlatDocumentData<z.infer<(typeof import('$lib/server/db'))['user']>, string>
+		session: FlatDocumentData<z.infer<(typeof import('$lib/server/db'))['session']>, string>
 	}>
 > {
 	const session = (await db.session.find(sessionId))?.flat()

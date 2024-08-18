@@ -65,7 +65,13 @@
             </div>
         </div>
     </div>
-    <div class="flex-grow">
+    <div class="flex-grow flex flex-row">
         {@render children()}
     </div>
 </div>
+
+<div class="toast">
+    <div class="alert alert-info">
+      <span>New message arrived.</span>
+    </div>
+  </div>

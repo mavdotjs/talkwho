@@ -1,4 +1,4 @@
-import { cookieController, cookieExpiration, getUserAndSession } from "$lib/auth";
+import { cookieController, cookieExpiration, getUserAndSession } from "$lib/server/auth";
 import type { Handle } from "@sveltejs/kit";
 import { createDate } from "oslo";
 
