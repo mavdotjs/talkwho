@@ -1,5 +1,5 @@
-import { redirect } from "@sveltejs/kit";
+import { redirect } from '@sveltejs/kit'
 
 export async function load() {
-    return redirect(302, '/app')
+	return redirect(302, '/app')
 }

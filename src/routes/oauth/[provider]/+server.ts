@@ -1,3 +1,3 @@
-import { oauth_handler } from "$lib/server/oauth";
+import { oauth_handler } from '$lib/server/oauth'
 
-export const GET = oauth_handler();
+export const GET = oauth_handler()

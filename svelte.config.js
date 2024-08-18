@@ -1,7 +1,7 @@
-import adapter from 'sveltekit-adapter-deno';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import adapter from 'sveltekit-adapter-deno'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
-import { Float16Array } from "@petamoriken/float16"
+import { Float16Array } from '@petamoriken/float16'
 // kvdex uses float16array under the hood (doesn't exist in node), filling that in here so it works during dev
 globalThis.Float16Array = Float16Array
 
@@ -23,6 +23,6 @@ const config = {
 			}
 		})
 	}
-};
+}
 
-export default config;
+export default config

@@ -40,18 +40,18 @@ const api = new Hono<{ Bindings: Bindings }>()
 			return text(roomId)
 		}
 	)
-    .get('/rooms/connect/:id', (c) => {
-        return streamSSE(c, async (stream) => {
-            while (true) {
-              const message = `It is ${new Date().toISOString()}`
-              await stream.writeSSE({
-                data: message,
-                event: 'time-update',
-              })
-              await stream.sleep(1000)
-            }
-          })
-    })
+	.get('/rooms/connect/:id', (c) => {
+		return streamSSE(c, async (stream) => {
+			while (true) {
+				const message = `It is ${new Date().toISOString()}`
+				await stream.writeSSE({
+					data: message,
+					event: 'time-update'
+				})
+				await stream.sleep(1000)
+			}
+		})
+	})
 
 export type api = typeof api
 
