@@ -1,4 +1,12 @@
-import { Google, Discord, GitHub, generateState, generateCodeVerifier } from 'arctic'
+import {
+	Google,
+	Discord,
+	GitHub,
+	generateState,
+	generateCodeVerifier,
+	type GitHubTokens,
+	type DiscordTokens
+} from 'arctic'
 import { error, redirect, type Actions, type RequestHandler, type ServerLoad } from '@sveltejs/kit'
 import { z } from 'zod'
 import { db, publicUser } from './db'
@@ -6,8 +14,9 @@ import { env } from '$env/dynamic/private'
 import { dev } from '$app/environment'
 import { alphabet, generateRandomString } from 'oslo/crypto'
 import { decodeJwt } from 'jose'
-import { superForm, type SuperForm } from 'sveltekit-superforms'
+import { superValidate, type SuperForm } from 'sveltekit-superforms'
 import { zod, type ValidationAdapter } from 'sveltekit-superforms/adapters'
+import { cookieController, createSessionForUser } from './auth'
 
 const {
 	DISCORD_CLIENT_ID,
@@ -158,24 +167,50 @@ export function oauth_callback(): ServerLoad<
 		) {
 			error(400, 'Invalid request')
 		}
-		let tokens
-		let id
-		let name
+		let id: string
+		let name: string
 		if (provider instanceof Google) {
-			tokens = await provider.validateAuthorizationCode(code, storedCodeVerifier)
+			const tokens = await provider.validateAuthorizationCode(code, storedCodeVerifier)
 			console.log(tokens.idToken)
 			const { sub, name: Uname } = decodeJwt(tokens.idToken)
-			id = sub
-			name = Uname
+			id = sub!
+			name = Uname as string
 		} else {
-			tokens = await provider.validateAuthorizationCode(code)
+			const tokens: GitHubTokens | DiscordTokens = await provider.validateAuthorizationCode(code)
+			if (providerID === 'discord') {
+				const response = await fetch('https://discord.com/api/users/@me', {
+					headers: {
+						Authorization: `Bearer ${tokens.accessToken}`
+					}
+				})
+				if (!response.ok) error(500, 'Unable to contact provider')
+				const { id: userId, username } = await response.json()
+				id = userId
+				name = username
+			} else if (providerID === 'github') {
+				const response = await fetch('https://api.github.com/user', {
+					headers: {
+						Authorization: `Bearer ${tokens.accessToken}`
+					}
+				})
+				if (!response.ok) error(500, 'Unable to contact provider')
+				const { id: userId, login } = await response.json()
+				id = userId
+				name = login
+			}
 		}
-		const formToken = generateRandomString(12, alphabet('0-9', 'a-z'))
-		const form = superForm(
-			zod(z.object({ token: z.string() }), {
-				defaults: { token: formToken }
+        const existingUser = (await db.user.getOneBySecondaryIndex(`oauth_${providerID}_id`, id))?.flat()
+        if(existingUser) {
+            const session = await createSessionForUser(existingUser.id)
+            const sessionCookie = cookieController.createCookie(session.unwrap().id)
+			cookies.set(sessionCookie.name, sessionCookie.value, {
+				path: '.',
+				...sessionCookie.attributes
 			})
-		)
+			redirect(302, '/app')
+        }
+		const formToken = generateRandomString(12, alphabet('0-9', 'a-z'))
+		const form = await superValidate({ token: formToken }, zod(z.object({ token: z.string() })))
 		if (locals.user) {
 			// the user is already logged in, ask them if they want to link the account to their existing account, or log out and try again
 			await db.saved_oauth_data.set(formToken, {
@@ -207,5 +242,12 @@ export function oauth_callback(): ServerLoad<
 }
 
 export function oauth_callback_actions(): Actions<{ provider: string }> {
-	return {}
+	return {
+		link: ({ request, locals,  }) => {
+            // get existing account and link it
+        },
+        create: ({ request }) => {
+            // create new account with 
+        }
+	}
 }
